@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responses - Dark Mode</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818;
+            color: #f1f1f1;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #2b2b2b;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            text-align: center;
+            color: #f1f1f1;
+        }
+
+        .response-item {
+            background-color: #333;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .response-item.read {
+            background-color: #444;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+
+        .response-item button {
+            background-color: #f44336;
+        }
+
+        .response-item button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Responses</h1>
+        <div id="responses"></div>
+    </div>
+
+    <script>
+        function loadResponses() {
+            const responses = JSON.parse(localStorage.getItem('responses')) || [];
+            const responseContainer = document.getElementById('responses');
+            responseContainer.innerHTML = '';
+
+            responses.forEach((response, index) => {
+                const responseDiv = document.createElement('div');
+                responseDiv.classList.add('response-item');
+                if (response.read) {
+                    responseDiv.classList.add('read');
+                }
+
+                let responseContent = `<strong>Response #${index + 1}</strong><br>`;
+                for (const [key, value] of Object.entries(response.data)) {
+                    responseContent += `<strong>${key}:</strong> ${value}<br>`;
+                }
+
+                responseDiv.innerHTML = `
+          ${responseContent}
+          <button onclick="markRead(${index})">Mark as Read</button>
+          <button onclick="deleteResponse(${index})">Delete</button>
+        `;
+                responseContainer.appendChild(responseDiv);
+            });
+        }
+
+        function markRead(index) {
+            const responses = JSON.parse(localStorage.getItem('responses'));
+            responses[index].read = true;
+            localStorage.setItem('responses', JSON.stringify(responses));
+            loadResponses();
+        }
+
+        function deleteResponse(index) {
+            let responses = JSON.parse(localStorage.getItem('responses'));
+            responses.splice(index, 1);
+            localStorage.setItem('responses', JSON.stringify(responses));
+            loadResponses();
+        }
+
+        window.onload = loadResponses;
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Form - Dark Mode</title>
+    <style>
+        /* Dark mode styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818;
+            color: #f1f1f1;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #2b2b2b;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            text-align: center;
+            color: #f1f1f1;
+        }
+
+        fieldset {
+            border: 2px solid #444;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #333;
+        }
+
+        legend {
+            font-weight: bold;
+            color: #f1f1f1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+
+        input,
+        select,
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #444;
+            color: #fff;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Advanced Form</h1>
+        <form id="advanced-form">
+            <!-- Personal Information Section -->
+            <fieldset>
+                <legend>Personal Information</legend>
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="first-name" required><br><br>
+
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="last-name" required><br><br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+            </fieldset>
+
+            <!-- Address Information Section -->
+            <fieldset>
+                <legend>Address Information</legend>
+                <label for="street">Street:</label>
+                <input type="text" id="street" name="street" required><br><br>
+
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required><br><br>
+
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" required><br><br>
+
+                <label for="zip">ZIP Code:</label>
+                <input type="text" id="zip" name="zip" required><br><br>
+            </fieldset>
+
+            <!-- Preferences Section -->
+            <fieldset>
+                <legend>Preferences</legend>
+                <label for="contact-method">Preferred Contact Method:</label>
+                <select id="contact-method" name="contact-method">
+                    <option value="email">Email</option>
+                    <option value="phone">Phone</option>
+                    <option value="mail">Mail</option>
+                </select><br><br>
+
+                <label for="newsletter">Subscribe to Newsletter:</label>
+                <input type="checkbox" id="newsletter" name="newsletter"><br><br>
+            </fieldset>
+
+            <!-- Additional Information Section -->
+            <fieldset>
+                <legend>Additional Information</legend>
+                <label for="bio">Bio:</label>
+                <textarea id="bio" name="bio" rows="4" cols="50"></textarea><br><br>
+
+                <label for="website">Personal Website:</label>
+                <input type="url" id="website" name="website"><br><br>
+            </fieldset>
+
+            <!-- Submit Button -->
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to save form data in localStorage
+        document.getElementById('advanced-form').addEventListener('submit', function (event) {
+            event.preventDefault();  // Prevent form from reloading
+
+            // Gather form data
+            const formData = new FormData(event.target);
+            let formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            // Debug: Log the data to the console
+            console.log("Form Data Submitted:", formObject);
+
+            // Check if localStorage is available
+            if (typeof (Storage) !== "undefined") {
+                let responses = JSON.parse(localStorage.getItem('responses')) || [];
+                responses.push({ data: formObject, read: false });
+                localStorage.setItem('responses', JSON.stringify(responses));
+
+                // Feedback for the user
+                alert('Form submitted successfully!');
+            } else {
+                console.error('LocalStorage is not supported on this device/browser.');
+            }
+
+            // Reset form after submission
+            event.target.reset();
+        });
+    </script>
+</body>
+
+</html>
